@@ -1,0 +1,6 @@
+Django==5.0
+psycopg[binary,pool]
+python-dotenv==1.0.0
+djangorestframework==3.14.0
+django-allauth==0.52.0
+dj-rest-auth==4.0.0
