@@ -1,6 +1,8 @@
 from datetime import timedelta
 from django.db import models
 from django.utils import timezone
+
+from core.models import BaseModel
 from users.models import User
 
 choice = (
@@ -9,7 +11,7 @@ choice = (
     ('returned', 'Returned')
 )
 
-class Category(models.Model):
+class Category(BaseModel):
     title = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
@@ -19,7 +21,7 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
 
-class Tag(models.Model):
+class Tag(BaseModel):
     title = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
@@ -29,7 +31,7 @@ class Tag(models.Model):
         verbose_name_plural = "Tags"
 
 
-class Project(models.Model):
+class Project(BaseModel):
     title = models.CharField(max_length=50)
     details = models.TextField(max_length=2000)
     target = models.PositiveIntegerField()
@@ -39,6 +41,7 @@ class Project(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name="projects")
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     tags = models.ManyToManyField(Tag, related_name="projects")
+    
 
     def __str__(self):
         return str(self.title)
@@ -46,7 +49,7 @@ class Project(models.Model):
     class Meta:
         verbose_name_plural = "Projects"
 
-class ProjectImage(models.Model):
+class ProjectImage(BaseModel):
     path = models.ImageField(upload_to='project', verbose_name='Image')
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="images")
 
@@ -57,9 +60,18 @@ class ProjectImage(models.Model):
         verbose_name_plural = "Project Images"
 
 
+class ProjectVideo(BaseModel):
+    path = models.FileField(upload_to='project', verbose_name='Video')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="videos")
+
+    def __str__(self):
+        return str(self.path)
+
+    class Meta:
+        verbose_name_plural = "Project Videos"
 
 
-class Investment(models.Model):
+class Investment(BaseModel):
     amount = models.PositiveIntegerField()
     investment = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="investments")
     investor = models.ForeignKey(User, on_delete=models.DO_NOTHING, default=None, related_name="investments")
@@ -71,7 +83,7 @@ class Investment(models.Model):
     class Meta:
         verbose_name_plural = "Investments"
 
-class Transaction(models.Model):
+class Transaction(BaseModel):
     amount = models.PositiveIntegerField()
     transaction_date = models.DateTimeField(default=timezone.now)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
@@ -85,7 +97,7 @@ class Transaction(models.Model):
 
 
 
-class RewardsEarned(models.Model):
+class RewardsEarned(BaseModel):
     investor = models.ForeignKey(User, on_delete=models.DO_NOTHING, default=None)
     investment = models.ForeignKey(Investment, on_delete=models.DO_NOTHING, default=None)
     amount = models.PositiveIntegerField()

@@ -10,6 +10,7 @@ class BaseModel(models.Model):
                                    related_name='created_%(model_name)ss')
     updated_by = models.ForeignKey(AUTH_USER_MODEL, SET_NULL, null=True, blank=True,
                                    related_name='updated_%(model_name)ss')
+    is_deleted = models.BooleanField(default=False)
 
     class Meta:
         abstract = True
