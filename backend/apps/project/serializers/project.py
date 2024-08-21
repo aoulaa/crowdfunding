@@ -1,27 +1,4 @@
 from rest_framework import serializers
-# from project.models import Project
-#
-#
-# class ProjectSerializer(serializers.ModelSerializer):
-#     creator = serializers.HiddenField(default=serializers.CurrentUserDefault())
-#
-#     def get_images(self, obj) -> str or None:
-#         if obj and obj.images:
-#             return obj.images.path
-#         return None
-#
-#     def get_videos(self, obj) -> str or None:
-#         if obj and obj.videos:
-#             return obj.videos.path
-#         return None
-#
-#
-#     class Meta:
-#         model = Project
-#         fields = (
-#             'id', 'images', 'title', 'details', 'target', 'start_date', 'end_date', 'creation_date', 'creator', 'category', 'tags', 'videos')
-#         read_only_fields = ('id', 'creator')
-
 from project.models import Project, ProjectImage, ProjectVideo, Tag, Category
 
 class ProjectImageSerializer(serializers.ModelSerializer):
