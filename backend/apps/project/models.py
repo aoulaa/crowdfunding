@@ -30,13 +30,15 @@ class Tag(BaseModel):
     class Meta:
         verbose_name_plural = "Tags"
 
+def default_end_date():
+    return timezone.now() + timedelta(days=14)
 
 class Project(BaseModel):
     title = models.CharField(max_length=50)
     details = models.TextField(max_length=2000)
     target = models.PositiveIntegerField()
     start_date = models.DateTimeField(default=timezone.now)
-    end_date = models.DateTimeField(default=timezone.now() + timedelta(days=14))
+    end_date = models.DateTimeField(default=default_end_date)
     creation_date = models.DateTimeField(default=timezone.now)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name="projects")
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
@@ -73,7 +75,7 @@ class ProjectVideo(BaseModel):
 
 class Investment(BaseModel):
     amount = models.PositiveIntegerField()
-    investment = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="investments")
+    project = models.ForeignKey(Project, on_delete=models.DO_NOTHING, related_name="investments")
     investor = models.ForeignKey(User, on_delete=models.DO_NOTHING, default=None, related_name="investments")
     status = models.CharField(max_length=10, choices=choice, default='pending')
 

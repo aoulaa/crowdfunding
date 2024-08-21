@@ -8,3 +8,11 @@ class User(AbstractUser):
     avatar = models.ImageField(upload_to="profile_images", default='profile_images/default.png', verbose_name='avatar')
     country = models.CharField(max_length=20, blank=True, default='', verbose_name='country')
     city = models.CharField(max_length=20, blank=True, default='', verbose_name='city')
+    email = models.EmailField(max_length=254, editable=False)
+
+    def __str__(self):
+        return self.username
+
+    class Meta:
+        verbose_name = 'user'
+        verbose_name_plural = 'users'

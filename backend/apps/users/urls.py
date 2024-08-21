@@ -1,6 +1,6 @@
-from dj_rest_auth.views import UserDetailsView
 from django.urls import path
+from users.views.user import UserDetailView
 
 urlpatterns = [
-    path("user/", UserDetailsView.as_view(), name="rest_user_details"),
+    path("user/<int:key>/", UserDetailView.as_view(), name="user-detail"),
 ]

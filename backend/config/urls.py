@@ -21,6 +21,6 @@ urlpatterns = [
     path('api/', include([
         path('project/', include(('project.urls', 'project'), namespace='project')),
         path("auth/", include("authentication.urls")),
-        path('users/', include(('users.urls', 'users'), namespace='users')),
+        path('accounts/', include(('users.urls', 'users'), namespace='users')),
     ])),
 ]
