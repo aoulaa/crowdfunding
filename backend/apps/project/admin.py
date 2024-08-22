@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from project.models import Project, Investment, Transaction, RewardsEarned, Category, Tag
+from project.models import Project, Investment, Transaction, RewardsEarned, Category, Tag, ProjectVideo, ProjectImage
 
 
 @admin.register(Project)
@@ -37,3 +37,15 @@ class CategoryAdmin(admin.ModelAdmin):
 class TagAdmin(admin.ModelAdmin):
     fields = ('id', 'title')
     readonly_fields = ['id', ]
+
+@admin.register(ProjectVideo)
+class ProjectVideoAdmin(admin.ModelAdmin):
+    fields = ('id', 'path', 'project')
+    readonly_fields = ['id', ]
+    list_display = ('id',)
+
+@admin.register(ProjectImage)
+class ProjectImageAdmin(admin.ModelAdmin):
+    fields = ('id', 'path', 'project')
+    readonly_fields = ['id', ]
+    list_display = ('id',)
