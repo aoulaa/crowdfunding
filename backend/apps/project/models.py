@@ -1,3 +1,4 @@
+import uuid
 from datetime import timedelta
 from django.db import models
 from django.utils import timezone
@@ -10,6 +11,17 @@ choice = (
     ('approved', 'Approved'),
     ('returned', 'Returned')
 )
+
+def photo_upload_to(instance, filename):
+    ext = filename.split('.')[-1]
+    filename_new = "%s.%s" % (uuid.uuid4(), ext)
+    return 'images/projects/{filename_new}'.format(filename_new=filename_new)
+
+def video_upload_to(instance, filename):
+    ext = filename.split('.')[-1]
+    filename_new = "%s.%s" % (uuid.uuid4(), ext)
+    return 'videos/projects/{filename_new}'.format(filename_new=filename_new)
+
 
 class Category(BaseModel):
     title = models.CharField(max_length=50, unique=True)
@@ -52,7 +64,8 @@ class Project(BaseModel):
         verbose_name_plural = "Projects"
 
 class ProjectImage(BaseModel):
-    path = models.ImageField(upload_to='project', verbose_name='Image')
+    path = models.ImageField(upload_to=photo_upload_to, blank=True,
+                               null=True, max_length=500)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="images")
 
     def __str__(self):
@@ -63,7 +76,8 @@ class ProjectImage(BaseModel):
 
 
 class ProjectVideo(BaseModel):
-    path = models.FileField(upload_to='project', verbose_name='Video')
+    path = models.FileField(upload_to=video_upload_to, blank=True,
+                               null=True, max_length=500)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="videos")
 
     def __str__(self):

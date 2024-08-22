@@ -2,6 +2,7 @@ import os
 import sys
 from pathlib import Path
 
+from django.conf import settings
 from dotenv import load_dotenv
 
 # Path to your .env file
@@ -16,6 +17,14 @@ sys.path.append(os.path.join(BASE_DIR, 'apps'))
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 DEBUG = os.getenv('DJANGO_DEBUG', False)
+
+if os.environ.get('MEDIA_ROOT'):
+    MEDIA_ROOT = os.environ.get('MEDIA_ROOT')
+else:
+    MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'mediafiles')
+
+# URL used to access the media
+MEDIA_URL = '/media/'
 
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS')
 if ALLOWED_HOSTS and isinstance(ALLOWED_HOSTS, str):
