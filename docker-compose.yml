@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  nginx:
+    restart: always
+    environment:
+      - SOME_ENV=wtf
+    image: bitnami/nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/investme.conf:/opt/bitnami/nginx/conf/server_blocks/investme.conf:ro
+
+  backend:
+    restart: always
+    environment:
+      - DJANGO_SECRET_KEY=local
+      - BACKEND_DOMAIN
+      - FRONTEND_DOMAIN
+      - DEBUG
+    build:
+        context: ./backend/
+        dockerfile: Dockerfile
+    command: >
+      bash -c "python manage.py migrate &&
+               python manage.py initadmin &&
+               gunicorn config.wsgi:application --preload -b 0.0.0.0:8000"
+    volumes:
+      - ./.env:/code/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+  backend_static:
+    restart: always
+    ports:
+      - "8001:8001"
+    build:
+      context: ./backend/
+      dockerfile: adminstatic.Dockerfile
+ 
