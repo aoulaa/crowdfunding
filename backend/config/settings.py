@@ -14,9 +14,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 sys.path.append(os.path.join(BASE_DIR, 'apps'))
 
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'local')
 
-DEBUG = os.getenv('DJANGO_DEBUG', False)
+DEBUG = os.getenv('DJANGO_DEBUG', True)
+
+
+
+# Static files (CSS, JavaScript, Images)
+
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "files/static")
+
 
 if os.environ.get('MEDIA_ROOT'):
     MEDIA_ROOT = os.environ.get('MEDIA_ROOT')
@@ -152,11 +160,6 @@ USE_I18N = True
 USE_TZ = True
 
 SITE_ID = 1
-
-# Static files (CSS, JavaScript, Images)
-
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "mount/files/static")
 
 # Default primary key field type
 

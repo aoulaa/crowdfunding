@@ -13,3 +13,5 @@ data
 .idea
 mount
 logs
+mediafiles
+postgres-data
