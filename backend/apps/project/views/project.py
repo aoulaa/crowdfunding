@@ -1,5 +1,4 @@
 from rest_framework import status
-from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -14,7 +13,7 @@ class ProjectListCreateView(APIView):
 
     def get(self, request):
         queryset = Project.objects.filter(is_deleted=False).all()
-        serializer = ProjectSerializer(queryset, many=True, )
+        serializer = ProjectSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):

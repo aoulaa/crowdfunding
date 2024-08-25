@@ -12,10 +12,12 @@ choice = (
     ('returned', 'Returned')
 )
 
+
 def photo_upload_to(instance, filename):
     ext = filename.split('.')[-1]
     filename_new = "%s.%s" % (uuid.uuid4(), ext)
     return 'images/projects/{filename_new}'.format(filename_new=filename_new)
+
 
 def video_upload_to(instance, filename):
     ext = filename.split('.')[-1]
@@ -42,8 +44,10 @@ class Tag(BaseModel):
     class Meta:
         verbose_name_plural = "Tags"
 
+
 def default_end_date():
     return timezone.now() + timedelta(days=14)
+
 
 class Project(BaseModel):
     title = models.CharField(max_length=50)
@@ -55,17 +59,20 @@ class Project(BaseModel):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name="projects")
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     tags = models.ManyToManyField(Tag, related_name="projects")
-    
 
     def __str__(self):
         return str(self.title)
 
+    def days_remaining(self):
+        return (self.end_date - timezone.now()).days
+
     class Meta:
         verbose_name_plural = "Projects"
 
+
 class ProjectImage(BaseModel):
     path = models.ImageField(upload_to=photo_upload_to, blank=True,
-                               null=True, max_length=500)
+                             null=True, max_length=500)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="images")
 
     def __str__(self):
@@ -77,7 +84,7 @@ class ProjectImage(BaseModel):
 
 class ProjectVideo(BaseModel):
     path = models.FileField(upload_to=video_upload_to, blank=True,
-                               null=True, max_length=500)
+                            null=True, max_length=500)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="videos")
 
     def __str__(self):
@@ -99,6 +106,7 @@ class Investment(BaseModel):
     class Meta:
         verbose_name_plural = "Investments"
 
+
 class Transaction(BaseModel):
     amount = models.PositiveIntegerField()
     transaction_date = models.DateTimeField(default=timezone.now)
@@ -110,7 +118,6 @@ class Transaction(BaseModel):
 
     class Meta:
         verbose_name_plural = "Transactions"
-
 
 
 class RewardsEarned(BaseModel):
